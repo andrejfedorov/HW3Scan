@@ -11,6 +11,7 @@ def input_parser():
     parser.add_argument('ports', nargs='*')
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('-g', '--guess', action='store_true')
+    parser.add_argument('-j', '--num-threads', type=int, default=100)
     return parser.parse_args()
 
 def scan_udp(ip, port, timeout):
@@ -173,5 +174,5 @@ if __name__ == '__main__':
             else:
                 print(f"{p} {port_num}")
     
-    with ThreadPoolExecutor(max_workers=100) as executor:
+    with ThreadPoolExecutor(max_workers=args.num_threads) as executor:
         executor.map(lambda p: scan_port(p[0], p[1]), ports)
